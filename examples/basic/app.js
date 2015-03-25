@@ -1,5 +1,3 @@
-/** @jsx React.DOM */
-
 var React = require('react');
 var Menu = require('../../lib/index');
 var MenuTrigger = require('../../lib/components/MenuTrigger');

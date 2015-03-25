@@ -1,4 +1,3 @@
-/** @jsx React.DOM */
 assert = require('assert');
 React = require('react/addons');
 TestUtils = React.addons.TestUtils;
