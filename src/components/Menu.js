@@ -1,5 +1,3 @@
-'use strict';
-
 var React = require('react/addons');
 var cx = React.addons.classSet;
 
@@ -26,14 +24,14 @@ var Menu = module.exports = React.createClass({
     active: React.PropTypes.bool
   },
 
-  getChildContext: function getChildContext() {
+  getChildContext: function () {
     return {
       id: this.state.id,
       active: this.state.active
     };
   },
 
-  getInitialState: function getInitialState() {
+  getInitialState: function(){
     return {
       id: uuid(),
       active: false,
@@ -43,46 +41,46 @@ var Menu = module.exports = React.createClass({
     };
   },
 
-  closeMenu: function closeMenu() {
-    this.setState({ active: false }, this.focusTrigger);
+  closeMenu: function() {
+    this.setState({active: false}, this.focusTrigger);
   },
 
-  focusTrigger: function focusTrigger() {
+  focusTrigger: function() {
     this.refs.trigger.getDOMNode().focus();
   },
 
-  handleBlur: function handleBlur(e) {
+  handleBlur: function(e) {
     // give next element a tick to take focus
-    setTimeout(function () {
-      if (!this.getDOMNode().contains(document.activeElement) && this.state.active) {
+    setTimeout(function() {
+      if (!this.getDOMNode().contains(document.activeElement) && this.state.active){
         this.closeMenu();
       }
     }.bind(this), 1);
   },
 
-  handleTriggerToggle: function handleTriggerToggle() {
-    this.setState({ active: !this.state.active }, this.afterTriggerToggle);
+  handleTriggerToggle: function() {
+    this.setState({active: !this.state.active}, this.afterTriggerToggle);
   },
 
-  afterTriggerToggle: function afterTriggerToggle() {
+  afterTriggerToggle: function() {
     if (this.state.active) {
       this.refs.options.focusOption(0);
       this.updatePositioning();
     }
   },
 
-  scrollContentIntoPosition: function scrollContentIntoPosition(domElRect) {
+  scrollContentIntoPosition: function(domElRect) {
     var CONTENT_PADDING = 5;
-    if (domElRect.height + CONTENT_PADDING < window.innerHeight) {
+    if(domElRect.height + CONTENT_PADDING < window.innerHeight) {
       //scroll down if the bottom of the content is hidden
       var delta = Math.max(0, domElRect.bottom + CONTENT_PADDING - window.innerHeight);
-      if (delta) {
+      if(delta) {
         window.scrollBy(0, delta);
       }
     }
   },
 
-  updatePositioning: function updatePositioning() {
+  updatePositioning: function() {
     var triggerRect = this.refs.trigger.getDOMNode().getBoundingClientRect();
     var optionsRect = this.refs.options.getDOMNode().getBoundingClientRect();
     var positionState = {};
@@ -101,22 +99,23 @@ var Menu = module.exports = React.createClass({
     this.setState(positionState);
   },
 
-  handleKeys: function handleKeys(e) {
+  handleKeys: function(e) {
     if (e.key === 'Escape') {
       this.closeMenu();
     }
   },
 
-  verifyTwoChildren: function verifyTwoChildren() {
-    var ok = React.Children.count(this.props.children) === 2;
-    if (!ok) throw 'react-menu can only take two children, a MenuTrigger, and a MenuOptions';
+  verifyTwoChildren: function() {
+    var ok = (React.Children.count(this.props.children) === 2);
+    if (!ok)
+      throw 'react-menu can only take two children, a MenuTrigger, and a MenuOptions';
     return ok;
   },
 
-  renderTrigger: function renderTrigger() {
+  renderTrigger: function() {
     var trigger;
-    if (this.verifyTwoChildren()) {
-      React.Children.forEach(this.props.children, function (child) {
+    if(this.verifyTwoChildren()) {
+      React.Children.forEach(this.props.children, function(child){
         if (child.type === MenuTrigger.type) {
           trigger = cloneWithProps(child, {
             ref: 'trigger',
@@ -128,10 +127,10 @@ var Menu = module.exports = React.createClass({
     return trigger;
   },
 
-  renderMenuOptions: function renderMenuOptions() {
+  renderMenuOptions: function() {
     var options;
-    if (this.verifyTwoChildren()) {
-      React.Children.forEach(this.props.children, function (child) {
+    if(this.verifyTwoChildren()) {
+      React.Children.forEach(this.props.children, function(child){
         if (child.type === MenuOptions.type) {
           options = cloneWithProps(child, {
             ref: 'options',
@@ -145,25 +144,25 @@ var Menu = module.exports = React.createClass({
     return options;
   },
 
-  buildName: function buildName() {
-    var classObj = { Menu: true };
-    if (this.props.openMenuClass) {
+  buildName: function() {
+    var classObj = {Menu: true};
+     if (this.props.openMenuClass) {
       classObj[this.props.openMenuClass] = this.state.active;
-    }
+     }
     return cx(classObj);
   },
 
-  render: function render() {
-    return React.createElement(
-      'div',
-      {
-        className: this.buildClassName(this.buildName()),
-        onKeyDown: this.handleKeys,
-        onBlur: this.handleBlur
-      },
-      this.renderTrigger(),
-      this.renderMenuOptions()
-    );
+  render: function() {
+    return (
+      <div
+        className={this.buildClassName(this.buildName())}
+        onKeyDown={this.handleKeys}
+        onBlur={this.handleBlur}
+      >
+        {this.renderTrigger()}
+        {this.renderMenuOptions()}
+      </div>
+    )
   }
 
 });

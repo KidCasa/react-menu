@@ -1,48 +1,46 @@
-'use strict';
-
 var React = require('react');
 var MenuOption = require('./MenuOption');
-var cloneWithProps = require('react/lib/cloneWithProps');
+var cloneWithProps = require('react/lib/cloneWithProps')
 var buildClassName = require('../mixins/buildClassName');
 
 var MenuOptions = module.exports = React.createClass({
-  displayName: 'exports',
 
   contextTypes: {
     id: React.PropTypes.string,
     active: React.PropTypes.bool
   },
 
-  getInitialState: function getInitialState() {
-    return { activeIndex: 0 };
+  getInitialState: function() {
+    return {activeIndex: 0}
   },
 
   mixins: [buildClassName],
 
-  onSelectionMade: function onSelectionMade() {
+  onSelectionMade: function() {
     this.props.onSelectionMade();
   },
 
-  moveSelectionUp: function moveSelectionUp() {
+
+  moveSelectionUp: function() {
     this.updateFocusIndexBy(-1);
   },
 
-  moveSelectionDown: function moveSelectionDown() {
+  moveSelectionDown: function() {
     this.updateFocusIndexBy(1);
   },
 
-  handleKeys: function handleKeys(e) {
+  handleKeys: function(e) {
     var options = {
       'ArrowDown': this.moveSelectionDown,
       'ArrowUp': this.moveSelectionUp,
       'Escape': this.closeMenu
-    };
-    if (options[e.key]) {
+    }
+    if(options[e.key]){
       options[e.key].call(this);
     }
   },
 
-  normalizeSelectedBy: function normalizeSelectedBy(delta, numOptions) {
+  normalizeSelectedBy: function(delta, numOptions){
     this.selectedIndex += delta;
     if (this.selectedIndex > numOptions - 1) {
       this.selectedIndex = 0;
@@ -51,22 +49,22 @@ var MenuOptions = module.exports = React.createClass({
     }
   },
 
-  focusOption: function focusOption(index) {
+  focusOption: function(index) {
     this.selectedIndex = index;
     this.updateFocusIndexBy(0);
   },
 
-  updateFocusIndexBy: function updateFocusIndexBy(delta) {
+  updateFocusIndexBy: function(delta) {
     var optionNodes = this.getDOMNode().querySelectorAll('.Menu__MenuOption');
     this.normalizeSelectedBy(delta, optionNodes.length);
-    this.setState({ activeIndex: this.selectedIndex }, function () {
+    this.setState({activeIndex: this.selectedIndex}, function () {
       optionNodes[this.selectedIndex].focus();
     });
   },
 
-  renderOptions: function renderOptions() {
+  renderOptions: function() {
     var index = 0;
-    return React.Children.map(this.props.children, function (c) {
+    return React.Children.map(this.props.children, function(c){
       var clonedOption = c;
       if (c.type === MenuOption.type) {
         var active = this.state.activeIndex === index;
@@ -82,25 +80,25 @@ var MenuOptions = module.exports = React.createClass({
     }.bind(this));
   },
 
-  buildName: function buildName() {
+  buildName: function() {
     var cn = this.buildClassName('Menu__MenuOptions');
     cn += ' Menu__MenuOptions--horizontal-' + this.props.horizontalPlacement;
     cn += ' Menu__MenuOptions--vertical-' + this.props.verticalPlacement;
     return cn;
   },
 
-  render: function render() {
-    return React.createElement(
-      'div',
-      {
-        id: this.context.id,
-        role: 'menu',
-        tabIndex: '-1',
-        className: this.buildName(),
-        onKeyDown: this.handleKeys
-      },
-      this.renderOptions()
-    );
+  render: function() {
+    return (
+      <div
+        id={this.context.id}
+        role="menu"
+        tabIndex="-1"
+        className={this.buildName()}
+        onKeyDown={this.handleKeys}
+      >
+        {this.renderOptions()}
+      </div>
+    )
   }
 
 });

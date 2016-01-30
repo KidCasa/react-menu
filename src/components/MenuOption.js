@@ -1,10 +1,7 @@
-'use strict';
-
 var React = require('react');
 var buildClassName = require('../mixins/buildClassName');
 
 var MenuOption = module.exports = React.createClass({
-  displayName: 'exports',
 
   propTypes: {
     active: React.PropTypes.bool,
@@ -15,13 +12,13 @@ var MenuOption = module.exports = React.createClass({
 
   mixins: [buildClassName],
 
-  notifyDisabledSelect: function notifyDisabledSelect() {
+  notifyDisabledSelect: function() {
     if (this.props.onDisabledSelect) {
       this.props.onDisabledSelect();
     }
   },
 
-  onSelect: function onSelect() {
+  onSelect: function() {
     if (this.props.disabled) {
       this.notifyDisabledSelect();
       //early return if disabled
@@ -33,29 +30,29 @@ var MenuOption = module.exports = React.createClass({
     this.props._internalSelect();
   },
 
-  handleKeyUp: function handleKeyUp(e) {
+  handleKeyUp: function(e) {
     if (e.key === ' ') {
       this.onSelect();
     }
   },
 
-  handleKeyDown: function handleKeyDown(e) {
+  handleKeyDown: function(e) {
     if (e.key === 'Enter') {
       this.onSelect();
     }
   },
 
-  handleClick: function handleClick() {
+  handleClick: function() {
     this.onSelect();
   },
 
-  handleHover: function handleHover() {
+  handleHover: function() {
     this.props._internalFocus(this.props.index);
   },
 
-  buildName: function buildName() {
+  buildName: function() {
     var name = this.buildClassName('Menu__MenuOption');
-    if (this.props.active) {
+    if (this.props.active){
       name += ' Menu__MenuOption--active';
     }
     if (this.props.disabled) {
@@ -64,21 +61,21 @@ var MenuOption = module.exports = React.createClass({
     return name;
   },
 
-  render: function render() {
-    return React.createElement(
-      'div',
-      {
-        onClick: this.handleClick,
-        onKeyUp: this.handleKeyUp,
-        onKeyDown: this.handleKeyDown,
-        onMouseOver: this.handleHover,
-        className: this.buildName(),
-        role: 'menuitem',
-        tabIndex: '-1',
-        'aria-disabled': this.props.disabled
-      },
-      this.props.children
-    );
+  render: function() {
+    return (
+      <div
+        onClick={this.handleClick}
+        onKeyUp={this.handleKeyUp}
+        onKeyDown={this.handleKeyDown}
+        onMouseOver={this.handleHover}
+        className={this.buildName()}
+        role="menuitem"
+        tabIndex="-1"
+        aria-disabled={this.props.disabled}
+      >
+        {this.props.children}
+      </div>
+    )
   }
 
 });
