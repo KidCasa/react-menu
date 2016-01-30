@@ -5,15 +5,16 @@
   "main": "./lib/index",
   "repository": {
     "type": "git",
-    "url": "https://github.com/instructure-react/react-menu.git"
+    "url": "https://github.com/knomedia/react-menu.git"
   },
-  "homepage": "https://github.com/instructure-react/react-menu",
-  "bugs": "https://github.com/instructure-react/react-menu/issues",
+  "homepage": "https://github.com/knomedia/react-menu",
+  "bugs": "https://github.com/knomedia/react-menu/issues",
   "directories": {
     "example": "examples"
   },
   "scripts": {
-    "test": "scripts/test --browsers Chrome --single-run",
+    "build": "babel src -d lib",
+    "test": "scripts/test --browsers Firefox --single-run",
     "start": "scripts/dev-examples"
   },
   "authors": [
@@ -21,11 +22,15 @@
   ],
   "license": "MIT",
   "devDependencies": {
+    "babel-cli": "^6.4.5",
+    "babel-loader": "~4.0.0",
+    "babel-preset-es2015": "^6.3.13",
+    "babel-preset-react": "^6.3.13",
+    "babel-preset-stage-1": "^6.3.13",
     "browserify": "4.2.3",
     "browserify-shim": "3.6.0",
     "envify": "1.2.0",
     "expect": "0.1.1",
-    "jsx-loader": "0.11.2",
     "karma": "0.12.16",
     "karma-browserify": "^0.2.1",
     "karma-chrome-launcher": "0.1.4",
@@ -33,16 +38,14 @@
     "karma-firefox-launcher": "0.1.3",
     "karma-mocha": "0.1.3",
     "mocha": "1.20.1",
-    "react": "^0.14.3",
-    "react-dom": "^0.14.3",
-    "reactify": "^0.14.0",
+    "react": "^0.12.0",
+    "reactify": "^1.1.0",
     "rf-release": "0.3.1",
     "uglify-js": "2.4.15",
     "webpack-dev-server": "1.6.5"
   },
   "peerDependencies": {
-    "react": "^0.14.3",
-    "react-dom": "^0.14.3"
+    "react": ">=0.11.0"
   },
   "tags": [
     "react",

@@ -1,12 +1,10 @@
-'use strict';
-
 module.exports = {
 
-  buildClassName: function buildClassName(baseName) {
+  buildClassName: function(baseName) {
     var name = baseName;
     if (this.props.className) {
       name += ' ' + this.props.className;
     }
     return name;
-  }
+  },
 };
